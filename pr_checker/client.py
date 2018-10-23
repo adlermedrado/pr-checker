@@ -1,4 +1,3 @@
-import json
 import requests
 
 
@@ -10,22 +9,26 @@ class Client:
         headers = {'Authorization': f'bearer {GITHUB_TOKEN}'}
 
         query = """
-	{
-	  repositoryOwner(login: "ORG") {
-	    repository(name: "REPO") {
-	      pullRequests(first: 100, states: [OPEN]) {
-		edges {
-		  node {
-		    title
-		    state
-		    url
-		    createdAt
-		  }
-		}
-	      }
-	    }
-	  }
-	}
+        {
+            repositoryOwner(login: "ORG") {
+                repository(name: "REPO") {
+                    pullRequests(first: 100, states: [OPEN]) {
+                        edges {
+                            node {
+                                title
+                                state
+                                url
+                                createdAt
+                            }
+                        }
+                    }
+                }
+            }
+        }
         """.replace('ORG', org).replace('REPO', repo)
 
-        return requests.post(GITHUB_ENDPOINT, headers=headers, json={'query': query})
+        return requests.post(
+            GITHUB_ENDPOINT,
+            headers=headers,
+            json={'query': query}
+        )
